@@ -1,0 +1,104 @@
+{
+  "products": [
+    {
+      "productName": "T-shirt",
+      "quantity": 2,
+      "price": 10.99
+    },
+    {
+      "productName": "Notebook",
+      "quantity": 1,
+      "price": 5.49
+    },
+    {
+      "productName": "Socks",
+      "quantity": 3,
+      "price": 7.99
+    },
+    {
+      "productName": "Pencils",
+      "quantity": 4,
+      "price": 3.49
+    },
+    {
+      "productName": "Hoodie",
+      "quantity": 5,
+      "price": 12.99
+    },
+    {
+      "productName": "Ballpoint Pens",
+      "quantity": 6,
+      "price": 4.99
+    },
+    {
+      "productName": "Water Bottle",
+      "quantity": 7,
+      "price": 9.99
+    },
+    {
+      "productName": "Backpack",
+      "quantity": 8,
+      "price": 6.49
+    },
+    {
+      "productName": "Running Shoes",
+      "quantity": 9,
+      "price": 14.99
+    },
+    {
+      "productName": "Phone Charger",
+      "quantity": 10,
+      "price": 1.99
+    },
+    {
+      "productName": "Sunglasses",
+      "quantity": 11,
+      "price": 11.99
+    },
+    {
+      "productName": "Jeans",
+      "quantity": 12,
+      "price": 8.99
+    },
+    {
+      "productName": "Headphones",
+      "quantity": 13,
+      "price": 15.99
+    },
+    {
+      "productName": "Face Masks",
+      "quantity": 14,
+      "price": 2.49
+    },
+    {
+      "productName": "Watch",
+      "quantity": 15,
+      "price": 13.99
+    },
+    {
+      "productName": "Umbrella",
+      "quantity": 16,
+      "price": 7.49
+    },
+    {
+      "productName": "Sports Bag",
+      "quantity": 17,
+      "price": 10.49
+    },
+    {
+      "productName": "Jacket",
+      "quantity": 18,
+      "price": 16.99
+    },
+    {
+      "productName": "Gloves",
+      "quantity": 19,
+      "price": 5.99
+    },
+    {
+      "productName": "Scarf",
+      "quantity": 20,
+      "price": 3.99
+    }
+  ]
+}
