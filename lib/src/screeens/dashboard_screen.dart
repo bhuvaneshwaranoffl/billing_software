@@ -1,6 +1,5 @@
 
 import 'package:billingsoftware/src/provider/product_provider.dart';
-import 'package:billingsoftware/src/models/customer_model.dart';
 import 'package:billingsoftware/src/utlis/colors.dart';
 import 'package:billingsoftware/src/widgets/customer_invoice.dart';
 import 'package:billingsoftware/src/widgets/stock_management_widget.dart';
@@ -13,7 +12,7 @@ class DashBoardScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final productProvider = Provider.of<ProductProvider>(context);
+    final productProvider = Provider.of<TotalProductProvider>(context);
 
 
     return Scaffold(
@@ -102,7 +101,7 @@ class DashBoardScreen extends StatelessWidget {
                 child: Row(
                   children: [
                     Expanded(
-                      flex: 2,
+                      flex: 1,
                       child: Container(
                         height: 300,
                         decoration: BoxDecoration(
@@ -117,9 +116,10 @@ class DashBoardScreen extends StatelessWidget {
                             ),
                           ],
                         ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: CustomerInvoice(customers: [Customer(id: 1, name: 'lucifer', totalAmount: 100, paid: true)],
+                        child:const Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: CustomerInvoice(
+                            //customers: [],
                             
                           ),
                         ),

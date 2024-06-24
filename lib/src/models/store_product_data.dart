@@ -1,13 +1,11 @@
-
 import 'dart:convert';
 
-
-class SaveProductData {
+class StoreProductData {
   final String customerName;
   final int mobileNumber;
   final List<ProductDetail> products;
 
-  SaveProductData({
+  StoreProductData({
     required this.customerName,
     required this.mobileNumber,
     required this.products,
@@ -21,8 +19,8 @@ class SaveProductData {
     };
   }
 
-  factory SaveProductData.fromMap(Map<String, dynamic> map) {
-    return SaveProductData(
+  factory StoreProductData.fromMap(Map<String, dynamic> map) {
+    return StoreProductData(
       customerName: map['customerName'] as String,
       mobileNumber: map['mobileNumber'] as int,
       products: List<ProductDetail>.from((map['products'] as List<dynamic>)
@@ -33,10 +31,9 @@ class SaveProductData {
 
   String toJson() => json.encode(toMap());
 
-  factory SaveProductData.fromJson(String source) =>
-      SaveProductData.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory StoreProductData.fromJson(String source) =>
+      StoreProductData.fromMap(json.decode(source) as Map<String, dynamic>);
 }
-
 
 class ProductDetail {
   final String productName;

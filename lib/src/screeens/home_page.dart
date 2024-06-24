@@ -1,7 +1,6 @@
 import 'package:billingsoftware/src/screeens/dashboard_screen.dart';
 import 'package:billingsoftware/src/screeens/invoice.dart';
 import 'package:billingsoftware/src/screeens/product_entry/product_entry.dart';
-import 'package:billingsoftware/src/screeens/total_product.dart';
 import 'package:billingsoftware/src/utlis/colors.dart';
 import 'package:flutter/material.dart';
 
@@ -109,11 +108,11 @@ class _HomePageState extends State<HomePage> {
                     // const SizedBox(
                     //   height: 20,
                     // ),
-                    _buildNavItem(
-                      icon: Icons.list,
-                      label: "Total Products",
-                      index: 3,
-                    ),
+                    // _buildNavItem(
+                    //   icon: Icons.list,
+                    //   label: "Total Products",
+                    //   index: 3,
+                    // ),
                   ],
                 ),
               ),
@@ -132,7 +131,7 @@ class _HomePageState extends State<HomePage> {
                    // AddProductPage(),
                    ProductEntry(),
                    // CustomerManagement(),
-                    TotalProducts()
+                   // TotalProducts()
                   ],
                 ),
               ),

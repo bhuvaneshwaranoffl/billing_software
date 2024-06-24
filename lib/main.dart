@@ -1,3 +1,4 @@
+import 'package:billingsoftware/src/provider/invoice_provider.dart';
 import 'package:billingsoftware/src/provider/product_provider.dart';
 import 'package:billingsoftware/src/screeens/home_page.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +17,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_)=>ProductProvider()),
+        ChangeNotifierProvider(create: (_)=>TotalProductProvider()),
+        ChangeNotifierProvider(create: (context)=>InvoiceProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

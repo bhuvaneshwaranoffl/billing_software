@@ -20,7 +20,7 @@ class StockManagement extends StatelessWidget {
         ),
         padding: const EdgeInsets.all(20),
         child: SingleChildScrollView(
-          child: Consumer<ProductProvider>(
+          child: Consumer<TotalProductProvider>(
             builder: (context, productProvider, _) {
               if (productProvider.products.isEmpty) {
                 return const Center(
@@ -34,11 +34,13 @@ class StockManagement extends StatelessWidget {
                       columns: const [
                         DataColumn(label: Text('Product Name')),
                         DataColumn(label: Text('Quantity')),
+                         DataColumn(label: Text('Price')),
                       ],
                       rows: productProvider.products.map((product) {
                         return DataRow(cells: [
                           DataCell(Text(product.productName)),
                           DataCell(Text(product.quantity.toString())),
+                          DataCell(Text(product.price.toString())),
                         ]);
                       }).toList(),
                     ),

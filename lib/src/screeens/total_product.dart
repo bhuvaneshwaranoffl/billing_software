@@ -16,7 +16,7 @@ class _TotalProductsState extends State<TotalProducts> {
     super.initState();
     // Fetch products when the widget initializes
     Future.microtask(() =>
-        Provider.of<ProductProvider>(context, listen: false).fetchProducts());
+        Provider.of<TotalProductProvider>(context, listen: false).fetchProducts());
   }
 
   @override
@@ -24,7 +24,7 @@ class _TotalProductsState extends State<TotalProducts> {
     return Scaffold(
       backgroundColor: AppColor.leftSideColor,
       body: SingleChildScrollView(
-        child: Consumer<ProductProvider>(
+        child: Consumer<TotalProductProvider>(
           builder: (context, productProvider, child) {
             if (productProvider.products.isEmpty) {
               return const Center(child: CircularProgressIndicator());
