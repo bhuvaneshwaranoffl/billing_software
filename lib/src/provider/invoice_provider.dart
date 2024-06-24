@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print
+// ignore_for_file: avoid_print, dead_code
 
 import 'package:billingsoftware/src/models/product_model_fetch.dart';
 import 'package:flutter/material.dart';
@@ -43,11 +43,17 @@ class InvoiceProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  // Method to print the current state of the invoice data
-  // void printInvoiceData() {
-  //   print('Current Invoice Data:');
-  //   print('Customer Name: $_customerName');
-  //   print('Mobile Number: $_mobileNumber');
-  //   _invoiceData.forEach((product) => print(product.toMap()));
-  // }
+  int calculateUniqueCustomers() {
+    // Use a Set to store unique customer names
+    Set<String> uniqueCustomers = <String>{};
+
+    // Iterate through _invoiceData and add customer names to the Set
+    for (var invoice in _invoiceData) {
+      uniqueCustomers.add(invoice.customerName);
+    }
+
+    // Return the size of the Set which represents the number of unique customers
+    return uniqueCustomers.length;
+    print(uniqueCustomers.length);
+  }
 }

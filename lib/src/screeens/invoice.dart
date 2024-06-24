@@ -1,10 +1,9 @@
-// ignore_for_file: unused_local_variable
-
-import 'package:billingsoftware/src/provider/product_provider.dart';
+import 'package:billingsoftware/src/models/product_model_fetch.dart'; // Import the correct ProductDetail
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:billingsoftware/src/utlis/colors.dart';
-
+import 'package:billingsoftware/src/provider/invoice_provider.dart';
+import 'package:billingsoftware/src/provider/product_provider.dart';
 
 class InvoicePage extends StatefulWidget {
   const InvoicePage({super.key});
@@ -17,7 +16,7 @@ class _InvoicePageState extends State<InvoicePage> {
   final TextEditingController _quantityController = TextEditingController();
   final TextEditingController _customerNameController = TextEditingController();
   final TextEditingController _mobileNumberController = TextEditingController();
-
+  final List<ProductDetail> _addedProducts = [];
   String? _selectedProductName;
   double _selectedProductPrice = 0.0;
 
@@ -41,173 +40,99 @@ class _InvoicePageState extends State<InvoicePage> {
     super.dispose();
   }
 
-  void _addProduct(BuildContext context) {
-  //  var invoiceProvider = Provider.of<InvoiceProvider>(context, listen: false);
-    var productProvider =
-        Provider.of<TotalProductProvider>(context, listen: false);
+  void _addProductToInvoice() {
+    if (_selectedProductName != null && _quantityController.text.isNotEmpty) {
+      int quantity = int.parse(_quantityController.text);
+      double totalPrice = _selectedProductPrice * quantity;
 
-    if (_selectedProductName != null && _selectedProductPrice > 0) {
-      double quantity = double.tryParse(_quantityController.text.trim()) ?? 0.0;
+      ProductDetail product = ProductDetail(
+        // Ensure you are using ProductDetail from product_model_fetch.dart
+        productName: _selectedProductName!,
+        quantity: quantity,
+        price: _selectedProductPrice,
+        totalPrice: totalPrice,
+      );
 
-      if (quantity > 0) {
-        var customerName = _customerNameController.text;
-        var mobileNumber = int.tryParse(_mobileNumberController.text) ?? 0;
+      setState(() {
+        _addedProducts.add(product); // Add product to local list
+      });
 
-        var product = productProvider.getProductByName(_selectedProductName!);
-
-        if (product != null) {
-          double totalPrice = quantity * _selectedProductPrice;
-
-          // var productDetail = ProductDetail(
-          //   productName: _selectedProductName!,
-          //   quantity: quantity.toInt(),
-          //   price: _selectedProductPrice,
-          //   totalPrice: totalPrice,
-          // );
-
-          // var saveProductData = SaveProductData(
-          //   customerName: customerName,
-          //   mobileNumber: mobileNumber,
-          //   products: [productDetail],
-          // );
-
-         // invoiceProvider.addProduct(saveProductData);
-
-          // Clear the fields after adding a product
-          _quantityController.clear();
-          _quantityFocusNode.requestFocus();
-        }
-      } else {
-        // Handle invalid input
-        showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-            title: const Text('Invalid Input'),
-            content: const Text('Please enter a valid quantity.'),
-            actions: <Widget>[
-              TextButton(
-                child: const Text('OK'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
-          ),
-        );
-      }
+      _selectedProductName = null;
+      _selectedProductPrice = 0.0;
+      _quantityController.clear();
     }
   }
 
-// void _finishBilling(BuildContext context) {
-//     var invoiceProvider = Provider.of<InvoiceProvider>(context, listen: false);
+  void _finishBilling(BuildContext context) {
+    var invoiceProvider = Provider.of<InvoiceProvider>(context, listen: false);
 
-//     if (_customerNameController.text.isNotEmpty &&
-//         _mobileNumberController.text.isNotEmpty) {
-//       var customerName = _customerNameController.text;
-//       var mobileNumber = int.tryParse(_mobileNumberController.text) ?? 0;
-//       var products = invoiceProvider.invoiceData;
+    if (_customerNameController.text.isNotEmpty &&
+        _mobileNumberController.text.isNotEmpty &&
+        _addedProducts.isNotEmpty) {
+      var customerName = _customerNameController.text;
+      var mobileNumber = int.tryParse(_mobileNumberController.text) ?? 0;
 
-//       if (products.isNotEmpty) {
-//         // Assuming _selectedProductName and _selectedProductPrice are correctly set
-//         double totalPrice = products.fold(
-//           0,
-//           (previousValue, element) =>
-//               previousValue + element.products.first.totalPrice,
-//         );
+      // Convert ProductDetail list to SaveProductData list
+      List<SaveProductData> saveProducts = _addedProducts.map((product) {
+        return SaveProductData(
+          customerName: customerName,
+          mobileNumber: mobileNumber,
+          products: [product], // Wrap ProductDetail in a List<ProductDetail>
+        );
+      }).toList();
 
-//         var productDetail = SaveProductData.ProductDetail(
-//           // Here is the modification
-//           productName: _selectedProductName!, // Example, adjust as needed
-//           quantity: 1, // Example, adjust as needed
-//           price: _selectedProductPrice, // Example, adjust as needed
-//           totalPrice: _selectedProductPrice, // Example, adjust as needed
-//         );
+      invoiceProvider.saveInvoice(
+        customerName: customerName,
+        mobileNumber: mobileNumber,
+        products: saveProducts,
+      );
 
-//         var saveProductData = SaveProductData(
-//           customerName: customerName,
-//           mobileNumber: mobileNumber,
-//           products: [productDetail],
-//         );
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Billing Complete'),
+          content: const Text('Invoice has been saved successfully.'),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('OK'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        ),
+      );
 
-//         invoiceProvider.saveInvoice(
-//           customerName: customerName,
-//           mobileNumber: mobileNumber,
-//           products: [saveProductData],
-//         );
-
-//         // Show a confirmation message or navigate to another page
-//         showDialog(
-//           context: context,
-//           builder: (context) => AlertDialog(
-//             title: const Text('Billing Complete'),
-//             content: const Text('Invoice has been saved successfully.'),
-//             actions: <Widget>[
-//               TextButton(
-//                 child: const Text('OK'),
-//                 onPressed: () {
-//                   Navigator.of(context).pop();
-//                 },
-//               ),
-//             ],
-//           ),
-//         );
-
-//         // Clear the fields after finishing billing
-//         _customerNameController.clear();
-//         _mobileNumberController.clear();
-//       } else {
-//         // Handle no products added
-//         showDialog(
-//           context: context,
-//           builder: (context) => AlertDialog(
-//             title: const Text('No Products'),
-//             content:
-//                 const Text('Please add products before finishing billing.'),
-//             actions: <Widget>[
-//               TextButton(
-//                 child: const Text('OK'),
-//                 onPressed: () {
-//                   Navigator.of(context).pop();
-//                 },
-//               ),
-//             ],
-//           ),
-//         );
-//       }
-//     } else {
-//       // Handle invalid input
-//       showDialog(
-//         context: context,
-//         builder: (context) => AlertDialog(
-//           title: const Text('Invalid Input'),
-//           content: const Text('Please enter customer name and mobile number.'),
-//           actions: <Widget>[
-//             TextButton(
-//               child: const Text('OK'),
-//               onPressed: () {
-//                 Navigator.of(context).pop();
-//               },
-//             ),
-//           ],
-//         ),
-//       );
-//     }
-//   }
-
-
-  // double _calculateTotal(List<SaveProductData> invoiceData) {
-  //   double total = 0.0;
-  //   for (var product in invoiceData) {
-  //     total += product.totalPrice;
-  //   }
-  //   return total;
-  // }
+      setState(() {
+        _customerNameController.clear();
+        _mobileNumberController.clear();
+        _addedProducts.clear();
+      });
+    } else {
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Invalid Input'),
+          content: const Text(
+              'Please enter customer name, mobile number, and add at least one product.'),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('OK'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        ),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     var productProvider = Provider.of<TotalProductProvider>(context);
     var products = productProvider.products;
-    //var invoiceProvider = Provider.of<InvoiceProvider>(context, listen: false);
+
     return Scaffold(
       backgroundColor: AppColor.leftSideColor,
       appBar: AppBar(
@@ -310,7 +235,7 @@ class _InvoicePageState extends State<InvoicePage> {
                     ),
                     keyboardType: TextInputType.number,
                     onSubmitted: (_) {
-                      _addProduct(context);
+                      _addProductToInvoice();
                     },
                   ),
                 ),
@@ -334,46 +259,43 @@ class _InvoicePageState extends State<InvoicePage> {
               ],
             ),
             const SizedBox(height: 12.0),
-             const Expanded(
+            Expanded(
               child: SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     // Display customer name and mobile number
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          Text(
-                            'Customer Name:',
-                            style: TextStyle(
-                                fontSize: 17, fontWeight: FontWeight.bold),
-                          ),
-                          Text(
-                            'Mobile Number:',
-                            style: TextStyle(
-                                fontSize: 17, fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      ),
-                    // DataTable(
-                    //   columns: const [
-                    //     DataColumn(label: Text('Product Name')),
-                    //     DataColumn(label: Text('Quantity')),
-                    //     DataColumn(label: Text('Price')),
-                    //     DataColumn(label: Text('Total Price')),
-                    //   ],
-                    //   rows: invoiceProvider.invoiceData.map((product) {
-                    //     return DataRow(cells: [
-                    //       DataCell(Text(product.productName)),
-                    //       DataCell(Text(product.quantity.toString())),
-                    //       DataCell(
-                    //           Text('Rs ${product.price.toStringAsFixed(2)}')),
-                    //       DataCell(Text(
-                    //           'Rs ${product.totalPrice.toStringAsFixed(2)}')),
-                    //     ]);
-                    //   }).toList(),
-                    // ),
-                    Divider(),
+                    Text(
+                      'Customer Name: ${_customerNameController.text}',
+                      style: const TextStyle(
+                          fontSize: 17, fontWeight: FontWeight.bold),
+                    ),
+                    Text(
+                      'Mobile Number: ${_mobileNumberController.text}',
+                      style: const TextStyle(
+                          fontSize: 17, fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(height: 12.0),
+                    // DataTable to display added products
+                    DataTable(
+                      columns: const [
+                        DataColumn(label: Text('Product Name')),
+                        DataColumn(label: Text('Quantity')),
+                        DataColumn(label: Text('Price')),
+                        DataColumn(label: Text('Total Price')),
+                      ],
+                      rows: _addedProducts.map((product) {
+                        return DataRow(cells: [
+                          DataCell(Text(product.productName)),
+                          DataCell(Text(product.quantity.toString())),
+                          DataCell(
+                              Text('Rs ${product.price.toStringAsFixed(2)}')),
+                          DataCell(Text(
+                              'Rs ${product.totalPrice.toStringAsFixed(2)}')),
+                        ]);
+                      }).toList(),
+                    ),
+                    const Divider(),
                   ],
                 ),
               ),
@@ -383,28 +305,16 @@ class _InvoicePageState extends State<InvoicePage> {
               children: [
                 Column(
                   children: [
-                    // ElevatedButton(
-                    //   style: ElevatedButton.styleFrom(
-                    //       elevation: 10,
-                    //       shadowColor: Colors.black,
-                    //       minimumSize: const Size(100, 70)),
-                    //   onPressed: () {
-                    //   },
-                    //   child: const Text(
-                    //     "Clear billing",
-                    //     style: TextStyle(fontSize: 17),
-                    //   ),
-                    // ),
                     const SizedBox(
                       height: 20,
                     ),
-                     ElevatedButton(
+                    ElevatedButton(
                       style: ElevatedButton.styleFrom(
                           elevation: 10,
                           shadowColor: Colors.black,
                           minimumSize: const Size(100, 70)),
                       onPressed: () {
-                      //  _finishBilling(context);
+                        _finishBilling(context);
                       },
                       child: const Text(
                         "Finish Billing",
@@ -416,10 +326,11 @@ class _InvoicePageState extends State<InvoicePage> {
                 const Align(
                   alignment: Alignment.bottomRight,
                   child: Padding(
-                    padding: EdgeInsets.symmetric(
-                        horizontal: 16.0, vertical: 16.0),
-                    child: Text("",
-                     // 'Total: Rs ${_calculateTotal(invoiceProvider.invoiceData).toStringAsFixed(2)}',
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
+                    child: Text(
+                      //'Total: Rs ${_calculateTotal(invoiceProvider.invoiceData).toStringAsFixed(2)}',
+                      "Rs 1000",
                       style: TextStyle(
                           fontSize: 20.0, fontWeight: FontWeight.bold),
                     ),

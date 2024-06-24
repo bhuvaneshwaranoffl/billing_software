@@ -1,4 +1,5 @@
 
+import 'package:billingsoftware/src/provider/invoice_provider.dart';
 import 'package:billingsoftware/src/provider/product_provider.dart';
 import 'package:billingsoftware/src/utlis/colors.dart';
 import 'package:billingsoftware/src/widgets/customer_invoice.dart';
@@ -13,7 +14,7 @@ class DashBoardScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final productProvider = Provider.of<TotalProductProvider>(context);
-
+    final invoiceProvider = Provider.of<InvoiceProvider>(context);
 
     return Scaffold(
       backgroundColor: AppColor.leftSideColor,
@@ -43,11 +44,11 @@ class DashBoardScreen extends StatelessWidget {
                     padding: const EdgeInsets.only(left: 23),
                     child: Row(
                       children: [
-                        const CardWidget(
+                         CardWidget(
                           icon: Icons.person_2_outlined,
                           title: 'Customer',
                           subtitle:
-                             "100"
+                             invoiceProvider.calculateUniqueCustomers().toString()
                         ),
                         const SizedBox(width: 14),
                         CardWidget(

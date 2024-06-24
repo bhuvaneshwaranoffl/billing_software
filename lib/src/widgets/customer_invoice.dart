@@ -1,5 +1,7 @@
+import 'package:billingsoftware/src/provider/invoice_provider.dart';
 import 'package:billingsoftware/src/utlis/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class CustomerInvoice extends StatelessWidget {
   //final List<Customer> customers;
@@ -11,6 +13,7 @@ class CustomerInvoice extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final invoiceProvider = Provider.of<InvoiceProvider>(context);
     return Scaffold(
       
       body: SingleChildScrollView(
@@ -30,22 +33,19 @@ class CustomerInvoice extends StatelessWidget {
                   DataColumn(label: Text('Total Amount')),
                  // DataColumn(label: Text('Payment Status')),
                 ],
-                rows:const [
+                rows: [
                   // Determine text and color based on payment status
                   // String paymentStatusText = customer.paid ? 'Paid' : 'Unpaid';
                   // Color? paymentStatusColor =
                   //     customer.paid ? Colors.green : Colors.red;
               
                    DataRow(cells: [
-                    DataCell(Text(""
-                     // customer.id.toString()
+                    const DataCell(Text("1"
                       )),
                     DataCell(Text(
-                      //customer.name
-                      "")),
+                      invoiceProvider.customerName)),
                     DataCell(Text(
-                      //'Rs ${customer.totalAmount.toStringAsFixed(2)}'
-                      "")),
+                      invoiceProvider.mobileNumber.toString())),
                     // DataCell(
                     //   Text(paymentStatusText,
                     //       style: TextStyle(color: paymentStatusColor)),
