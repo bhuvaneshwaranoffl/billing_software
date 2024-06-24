@@ -1,5 +1,5 @@
 // ignore_for_file: file_names
-import 'package:billingsoftware/src/controller/provider/product_provider.dart';
+import 'package:billingsoftware/src/provider/product_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:billingsoftware/src/utlis/colors.dart';

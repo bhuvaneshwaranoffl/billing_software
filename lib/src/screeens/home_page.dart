@@ -1,6 +1,6 @@
 import 'package:billingsoftware/src/screeens/dashboard_screen.dart';
 import 'package:billingsoftware/src/screeens/invoice.dart';
-import 'package:billingsoftware/src/screeens/add_products_page.dart';
+import 'package:billingsoftware/src/screeens/product_entry/product_entry.dart';
 import 'package:billingsoftware/src/screeens/total_product.dart';
 import 'package:billingsoftware/src/utlis/colors.dart';
 import 'package:flutter/material.dart';
@@ -129,7 +129,8 @@ class _HomePageState extends State<HomePage> {
                   children: const [
                     DashBoardScreen(),
                     InvoicePage(),
-                    AddProductPage(),
+                   // AddProductPage(),
+                   ProductEntry(),
                    // CustomerManagement(),
                     TotalProducts()
                   ],

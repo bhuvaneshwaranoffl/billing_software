@@ -1,14 +1,20 @@
 import 'dart:convert';
 
-class ProductFetch {
+class SaveProductData {
   final String productName;
+  final String customerName;
+  final int mobileNumber;
   final int quantity;
   final double price;
+  final double totalPrice;
 
-  ProductFetch({
+  SaveProductData( {
     required this.productName,
     required this.quantity,
     required this.price,
+    required this.totalPrice,
+    required this.customerName,
+    required this.mobileNumber
   });
 
   Map<String, dynamic> toMap() {
@@ -16,19 +22,25 @@ class ProductFetch {
       'productName': productName,
       'quantity': quantity,
       'price': price,
+      'totalPrice':totalPrice,
+      'customerName':customerName,
+      'mobileNumber':mobileNumber
     };
   }
 
-  factory ProductFetch.fromMap(Map<String, dynamic> map) {
-    return ProductFetch(
+  factory SaveProductData.fromMap(Map<String, dynamic> map) {
+    return SaveProductData(
       productName: map['productName'] as String,
       quantity: (map['quantity'] as num).toInt(),
       price: (map['price'] as num).toDouble(),
+      totalPrice: (map['totalPrice'] as num).toDouble(),
+      customerName: map['customerName'] as String,
+      mobileNumber: (map['mobileNumber'] as num).toInt(),
     );
   }
 
   String toJson() => json.encode(toMap());
 
-  factory ProductFetch.fromJson(String source) =>
-      ProductFetch.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory SaveProductData.fromJson(String source) =>
+      SaveProductData.fromMap(json.decode(source) as Map<String, dynamic>);
 }
